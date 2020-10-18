@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  labels:
+    app: order
+  namespace: oss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+        - name: order
+          image: 676906203200.dkr.ecr.ap-northeast-2.amazonaws.com/oss-order:v1
+          ports:
+            - containerPort: 8080
+          env:
+          - name: MIN_INTERNET_COUNT
+            valueFrom:
+              configMapKeyRef:
+                name: oss-cm
+                key: mininternetcount
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+          volumeMounts:
+          - mountPath: "/mnt/oss"
+            name: volume
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: oss-efs
