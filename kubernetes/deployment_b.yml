@@ -51,7 +51,7 @@ spec:
           volumeMounts:
           - mountPath: "/mnt/oss"
             name: volume
-        volumes:
-          - name: volume
-            persistentVolumeClaim:
-              claimName: oss-efs
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: oss-efs

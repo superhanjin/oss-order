@@ -108,10 +108,10 @@ phases:
                     volumeMounts:
                     - mountPath: "/mnt/oss"
                       name: volume
-                  volumes:
-                    - name: volume
-                      persistentVolumeClaim:
-                        claimName: aws-efs
+                volumes:
+                  - name: volume
+                    persistentVolumeClaim:
+                      claimName: oss-efs
           EOF
 cache:
   paths:
