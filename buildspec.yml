@@ -78,6 +78,12 @@ phases:
                     image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$_PROJECT_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
                     ports:
                       - containerPort: 8080
+                    env:
+                    - name: MIN_INTERNET_COUNT
+                      valueFrom:
+                        configMapKeyRef:
+                           name: oss-cm
+                           key: mininternetcount
                     resources:
                       limits:
                         cpu: 500m
@@ -99,6 +105,13 @@ phases:
                       timeoutSeconds: 2
                       periodSeconds: 5
                       failureThreshold: 5
+                    volumeMounts:
+                    - mountPath: "/mnt/oss"
+                      name: volume
+                  volumes:
+                    - name: volume
+                      persistentVolumeClaim:
+                        claimName: aws-efs
           EOF
 cache:
   paths:

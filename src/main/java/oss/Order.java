@@ -2,6 +2,7 @@ package oss;
 
 import javax.persistence.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.env.Environment;
 
 @Entity
 @Table(name="Order_table")
@@ -27,6 +28,27 @@ public class Order {
             System.out.println("#################### OrderPlaced Event has been published ####################");
         }else {
             System.out.println("#################### Unknown Command is Called ####################");
+        }
+    }
+
+    @PrePersist
+    public void onPrePersist(){
+        String minInternetCount = "1";
+        int minICnt = 1;
+        if(System.getenv("MIN_INTERNET_COUNT") != null){
+            System.out.println("========================================"+System.getenv("MIN_INTERNET_COUNT")+"===================================");
+            minInternetCount = System.getenv("MIN_INTERNET_COUNT");
+            minICnt = Integer.valueOf(minInternetCount);
+        } else {
+            System.out.println("======================================== MIN_INTERNET_COUNT IS NULL ===================================");
+
+        }
+
+        if(this.getInternetCount() < minICnt)
+        {
+            System.out.println("#################### Internet Count should be more than " + minInternetCount + "####################");
+
+            throw new RuntimeException("Internet Count should be more than " + minInternetCount);
         }
     }
 

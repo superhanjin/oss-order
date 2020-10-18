@@ -4,6 +4,7 @@ metadata:
   name: order
   labels:
     app: order
+  namespace: oss
 spec:
   ports:
     - port: 8080

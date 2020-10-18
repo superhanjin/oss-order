@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: order
-          image: 676906203200.dkr.ecr.ap-northeast-2.amazonaws.com/oss-order:v1
+          image: 676906203200.dkr.ecr.ap-northeast-2.amazonaws.com/oss-order:vliveProbe
           ports:
             - containerPort: 8080
           env:
@@ -35,10 +35,11 @@ spec:
             periodSeconds: 5
             failureThreshold: 10
           livenessProbe:
-            httpGet:
-              path: '/actuator/health'
-              port: 8080
-            initialDelaySeconds: 120
+            exec:
+              command:
+                - cat
+                - /mnt/oss/healthy
+            initialDelaySeconds: 150
             timeoutSeconds: 2
             periodSeconds: 5
             failureThreshold: 5
