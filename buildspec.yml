@@ -82,8 +82,8 @@ phases:
                     - name: MIN_INTERNET_COUNT
                       valueFrom:
                         configMapKeyRef:
-                           name: oss-cm
-                           key: mininternetcount
+                          name: oss-cm
+                          key: mininternetcount
                     resources:
                       limits:
                         cpu: 500m
