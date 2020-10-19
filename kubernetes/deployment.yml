@@ -20,12 +20,6 @@ spec:
           image: 496278789073.dkr.ecr.ap-northeast-2.amazonaws.com/oss-order:v1
           ports:
             - containerPort: 8080
-          env:
-          - name: MIN_INTERNET_COUNT
-            valueFrom:
-              configMapKeyRef:
-                name: oss-cm
-                key: mininternetcount
           readinessProbe:
             httpGet:
               path: '/actuator/health'
@@ -50,6 +44,12 @@ spec:
           volumeMounts:
           - mountPath: "/mnt/oss"
             name: volume
+          env:
+          - name: MIN_INTERNET_COUNT
+            valueFrom:
+              configMapKeyRef:
+                name: oss-cm
+                key: mininternetcount
       volumes:
         - name: volume
           persistentVolumeClaim:

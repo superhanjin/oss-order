@@ -20,12 +20,6 @@ spec:
           image: 496278789073.dkr.ecr.ap-northeast-2.amazonaws.com/oss-order:vliveProbe
           ports:
             - containerPort: 8080
-          env:
-          - name: MIN_INTERNET_COUNT
-            valueFrom:
-              configMapKeyRef:
-                name: oss-cm
-                key: mininternetcount
           readinessProbe:
             httpGet:
               path: '/actuator/health'
